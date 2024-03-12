@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - API_KEY=<OPEN AI KEY>
+      - SYSTEM_PROMPT=<SYSTEM PROMPT>
+    volumes:
+      - ./backend:/app
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - API_ENDPOINT=http://localhost:8000
+    volumes:
+      - ./client:/app
+    depends_on:
+      - backend
+   
