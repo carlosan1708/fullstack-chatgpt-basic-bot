@@ -6,10 +6,7 @@ If you want to try with docker compose. I will required to substitute the env va
 
 cd chat_handler
 
-
 pip install -r requirements.txt --platform manylinux2014_x86_64 --target . --only-binary=:all:
-pip install -r requirements.txt -t . 
-
 
 Zip contents of folder. (Not the folder). Name it: chat_handler.zip
 
