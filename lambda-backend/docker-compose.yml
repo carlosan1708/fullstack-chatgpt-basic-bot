@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  localstack:
+    container_name: localstack_main
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=${SERVICES-lambda,apigateway }
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-docker-reuse }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  lambda_setup:
+    build:
+      dockerfile: Dockerfile.lambda_setup
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    volumes:
+      - ".:/app"
+    depends_on:
+      localstack:
+        condition: service_healthy
+
